@@ -17,7 +17,9 @@ export const Layout: React.FC<Props> = ({
 			<Styled.Header >
 				{title}
 			</Styled.Header>
-			<Styled.Layout.Content >{children}</Styled.Layout.Content>
+			<Styled.Layout.Content >
+				
+				{children}</Styled.Layout.Content>
 		</Styled.Layout>
 	);
 };
