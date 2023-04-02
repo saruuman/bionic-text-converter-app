@@ -1,89 +1,71 @@
-"use client";
+"use client"
 
+import React, { useState } from "react"
+import { Button, Col, Input, Row } from "antd"
+import * as Styled from "./Bionic.styled"
 
-import React, { useRef, useState } from "react";
-import {  Button, Col, Input, message, Row } from "antd";
-import * as Styled from "./Bionic.styled";
+import { textVide } from "text-vide"
 
-import { textVide } from "text-vide";
+export const Bionic: React.FC = () => {
+  const [inputText, setInputText] = React.useState("")
 
+  const [bionicText, setBionicText] = React.useState("")
 
-export const Bionic: React.FC =  () => {
+  const handleInputChange = (e) => {
+    setInputText(e.target.value)
+  }
 
-	
-	
-	const [inputText, setInputText] = React.useState("");
+  // renderToStream(<MyDocument />);
+  // const handleImportFile = (file) => {
+  // 	const reader = new FileReader();
+  // 	reader.onload = () => {
+  // 		setInputText(reader.result);
+  // 	};
+  // 	reader.readAsText(file);
+  // };
 
+  const downloadPdf = () => {
+    setIsDownloading(true)
+    setIsDownloading(false)
+  }
 
-	const [bionicText, setBionicText] = React.useState("");
+  // const handleImportError = (error) => {
+  // 	message.error("Failed to import file");
+  // };
 
-	const handleInputChange = (e) => {
-		setInputText(e.target.value);
-	};
-	
+  // const handleOCR = () => {
+  // // TODO: implement OCR processing
+  // 	message.info("OCR processing not implemented yet");
+  // };
 
-	
-	
-	// renderToStream(<MyDocument />);
-	// const handleImportFile = (file) => {
-	// 	const reader = new FileReader();
-	// 	reader.onload = () => {
-	// 		setInputText(reader.result);
-	// 	};
-	// 	reader.readAsText(file);
-	// };
+  const handleGenerateBionic = () => {
+    const bionicText = textVide(inputText).replace(/\n/g, "<br />")
+    setBionicText(bionicText)
+  }
 
+  // const [pdfDoc, setPdfDoc] = React.useState<PDFDocument>();
 
-	const downloadPdf = () => {
-		setIsDownloading(true);
-		setIsDownloading(false);
-	};
-	
+  // create htmldiv ref
 
-	const handleImportError = (error) => {
-		message.error("Failed to import file");
-	};
+  const [isDownloading, setIsDownloading] = useState(false)
 
-	const handleOCR = () => {
-	// TODO: implement OCR processing
-		message.info("OCR processing not implemented yet");
-	};
+  return (
+    // pass title and description to the layout
 
-	const handleGenerateBionic = () => {
-		const bionicText= textVide(inputText).replace(/\n/g, "<br />");
-		setBionicText(bionicText);
-
-	};
-
-
-	// const [pdfDoc, setPdfDoc] = React.useState<PDFDocument>();
-
-	
-
-	// create htmldiv ref
-
-	const [isDownloading, setIsDownloading] = useState(false);
-
-
-
-	return (
-	// pass title and description to the layout
-		
-		<>
-			<div >
-				<div 
-				>
-					<Row gutter={16} style={{ marginBottom: "1rem" }}>
-						<Col span={24}>
-							<Input.TextArea
-								value={inputText}
-								onChange={handleInputChange}
-								placeholder="Enter text or import a file"
-								autoSize={{ minRows: 6, maxRows: 10 }}
-							/>
-						</Col>
-					</Row>
-					{/* <Row gutter={16} style={{ marginBottom: "1rem" }}>
+    <>
+      <div>
+        <div>
+          <Row gutter={16} style={{ marginBottom: "1rem" }}>
+            <Col span={24}>
+              <Input.TextArea
+                value={inputText}
+                onChange={handleInputChange}
+                placeholder="Enter text or import a file"
+                autoSize={{ minRows: 6, maxRows: 10 }}
+              />
+            </Col>
+          </Row>
+          {/* <Row gutter={16} style={{ marginBottom: "1rem" }}>
 				<Col span={12}>
 					<Upload
 						accept=".txt,.pdf,.jpg,.jpeg,.png"
@@ -105,40 +87,44 @@ export const Bionic: React.FC =  () => {
 					<Button onClick={handleOCR}>Process picture with OCR</Button>
 				</Col>
 			</Row> */}
-					<Row gutter={16} style={{ marginBottom: "1rem" }} justify="end">
-						<Col style={{
-							width: "fit-content",
-							maxWidth:200,
-						}} span={24}>
-							<Button onClick={handleGenerateBionic}>Generate bionic version</Button>
-						</Col>
-					</Row>
-					{bionicText&&
-					<>
-						<Row gutter={16} style={{ marginBottom: "1rem" }}>
-							<Col span={24}>
-								<Styled.Text
-									dangerouslySetInnerHTML={{ __html: bionicText } }
-								/>
-							</Col>
-							
-						</Row>
-						<Row>
-							<Col span={24}>
-								<Button loading={isDownloading} onClick={downloadPdf}>Download PDF</Button>
-							</Col>
-						</Row>
-						{/* <Row gutter={16} style={{ marginBottom: "1rem" }}>
+          <Row gutter={16} style={{ marginBottom: "1rem" }} justify="end">
+            <Col
+              style={{
+                width: "fit-content",
+                maxWidth: 200,
+              }}
+              span={24}
+            >
+              <Button onClick={handleGenerateBionic}>
+                Generate bionic version
+              </Button>
+            </Col>
+          </Row>
+          {bionicText && (
+            <>
+              <Row gutter={16} style={{ marginBottom: "1rem" }}>
+                <Col span={24}>
+                  <Styled.Text
+                    dangerouslySetInnerHTML={{ __html: bionicText }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col span={24}>
+                  <Button loading={isDownloading} onClick={downloadPdf}>
+                    Download PDF
+                  </Button>
+                </Col>
+              </Row>
+              {/* <Row gutter={16} style={{ marginBottom: "1rem" }}>
 							<Col span={24}>
 								<MyDocument />
 							</Col>
 						</Row> */}
-
-					</>
-					
-					}
-				</div>
-			</div>
-		</>
-	);
-};
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  )
+}

@@ -1,24 +1,26 @@
-"use client";
-import {  useState } from "react";
-import { createCache, extractStyle, StyleProvider } from "@ant-design/cssinjs";
-import { useServerInsertedHTML } from "next/navigation";
-import "antd/dist/reset.css";
-import React from "react";
-import StyledComponentsRegistry from "./lib/registry";
+"use client"
+import "antd/dist/reset.css"
+
+import React from "react"
+import StyledComponentsRegistry from "@lib/registry"
+import "@styles/ui.less"
+// import font
+import { Open_Sans } from "next/font/google"
+
+const openSans = Open_Sans({ subsets: ["latin"] })
 
 export default function RootLayout({
-	children
+  children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-	return (
-		<html lang="it">
-			<head />
-			<body>
-					<StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-					
-			</body>
-		</html>
-	);
-}
+  return (
+    <html lang="it">
+      <head />
 
+      <body className={openSans.className}>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+      </body>
+    </html>
+  )
+}

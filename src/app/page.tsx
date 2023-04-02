@@ -1,26 +1,16 @@
-"use client";
-// import "@styles/ui.less";
+"use client"
 
+import React from "react"
 
-import React from "react";
-
-
-
-
-
-import { Bionic } from "./components/Bionic";
-import { Layout } from "./components/Layout";
-
-
-
+import { Bionic } from "./components/Bionic"
+import { Layout } from "./components/Layout"
 
 // make props available to parent component
 
 export default function Page() {
-	return (
-		<Layout title="Bionic Reading App">
-			<Bionic />
-		</Layout>
-	);
+  return (
+    <Layout title="Bionic Reading App">
+      <Bionic />
+    </Layout>
+  )
 }
-
