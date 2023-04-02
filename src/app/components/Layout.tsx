@@ -1,4 +1,5 @@
 "use client"
+import { Affix } from "antd"
 import * as Styled from "./Layout.styled"
 import React from "react"
 
@@ -10,8 +11,13 @@ type Props = {
 export const Layout: React.FC<Props> = ({ title, children }) => {
   return (
     <Styled.Layout>
-      <Styled.Header>{title}</Styled.Header>
-      <Styled.Layout.Content>{children}</Styled.Layout.Content>
+      <Affix offsetTop={0}>
+        <Styled.Header>
+          <Styled.Title level={2}>{title}</Styled.Title>
+        </Styled.Header>
+      </Affix>
+
+      <Styled.Content>{children}</Styled.Content>
     </Styled.Layout>
   )
 }
