@@ -4,7 +4,7 @@ import "antd/dist/reset.css"
 import React from "react"
 import StyledComponentsRegistry from "@lib/registry"
 import "@styles/ui.less"
-// import font
+import "@styles/global.css"
 import { Open_Sans } from "next/font/google"
 
 const openSans = Open_Sans({ subsets: ["latin"] })

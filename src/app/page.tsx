@@ -2,17 +2,15 @@
 
 import React from "react"
 
-import { Bionic } from "./components/Bionic"
-import { Layout } from "./components/Layout"
-import { getBionicText } from "@/lib/getBionicText"
-
-// make props available to parent component
+import { Bionic } from "./components/Bionic/Bionic"
+import { AppContext } from "./context/app"
 
 export default function Page() {
-  const title = getBionicText("Bionic Reading App")
   return (
-    <Layout title={<div dangerouslySetInnerHTML={{ __html: title }} />}>
+    <AppContext.Provider
+      value={{ title: "Bionic Reading App", headerHeight: 104 }}
+    >
       <Bionic />
-    </Layout>
+    </AppContext.Provider>
   )
 }

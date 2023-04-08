@@ -1,0 +1,26 @@
+html {
+    font-family: 'Open Sans' !important;
+}
+
+.ant-btn-primary {
+    background-color: black !important;
+    
+}
+
+.ant-btn-primary:hover{
+    background-color: #5d5a5a !important;
+}
+
+.ant-btn-default:not(:disabled){
+    color:  black  !important;
+    border-color:  black  !important;
+}
+.ant-btn-default:not(:disabled):hover {
+    color: #5d5a5a !important;
+    border-color: #5d5a5a !important;
+}
+textarea::placeholder {
+    color: #6c6c6b !important;
+    /* font-size:22px !important; */
+  }
+  
