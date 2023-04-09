@@ -16,7 +16,7 @@ export type FormValues = {
 export const BionicTextConverter: React.FC = () => {
   const [bionicText, setBionicText] = React.useState("")
 
-  const [isResultMode, setIsResultMode] = React.useState<boolean>(false)
+  const [isResultPage, setIsResultPage] = React.useState<boolean>(false)
   const [inputMode, setInputMode] = React.useState<"text" | "scan">("text")
   const changeInputMode = (mode: "text" | "scan") => {
     setInputMode(mode)
@@ -31,7 +31,7 @@ export const BionicTextConverter: React.FC = () => {
     }
     const bionicText = getBionicText(inputText)
     setBionicText(bionicText)
-    setIsResultMode(true)
+    setIsResultPage(true)
   }
   const copyText = () => {
     navigator.clipboard.writeText(bionicText)
@@ -39,7 +39,7 @@ export const BionicTextConverter: React.FC = () => {
 
   const closeResult = () => {
     clearInput()
-    setIsResultMode(false)
+    setIsResultPage(false)
   }
 
   const clearInput = () => {
@@ -63,7 +63,7 @@ export const BionicTextConverter: React.FC = () => {
         <Header
           inputMode={inputMode}
           onInputModeChange={changeInputMode}
-          isResultMode={isResultMode}
+          isResultPage={isResultPage}
           onCloseResult={closeResult}
           onCopyText={copyText}
           onGenerateBionicText={form.submit}
@@ -72,7 +72,7 @@ export const BionicTextConverter: React.FC = () => {
       }
     >
       <Styled.Body direction="vertical" size={40}>
-        {isResultMode ? (
+        {isResultPage ? (
           <BionicTextResult bionicText={bionicText} />
         ) : (
           <BionicTextInput form={form} onFormFinish={handleGenerateBionic} />

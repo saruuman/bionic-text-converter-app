@@ -19,7 +19,7 @@ type InputModeTab = {
   disabled?: boolean
 }
 type Props = {
-  isResultMode: boolean
+  isResultPage: boolean
   inputMode: "text" | "scan"
   onInputModeChange: (mode: "text" | "scan") => void
   onCopyText: () => void
@@ -28,7 +28,7 @@ type Props = {
   onClear: () => void
 }
 export const Header: React.FC<Props> = ({
-  isResultMode,
+  isResultPage,
   onGenerateBionicText,
   onCopyText,
   onCloseResult,
@@ -76,11 +76,11 @@ export const Header: React.FC<Props> = ({
       </Styled.Title>
       <Flex align="center" justify="center">
         <Styled.HeaderInnerContainer
-          justify={isResultMode ? "end" : "space-between"}
+          justify={isResultPage ? "end" : "space-between"}
         >
-          {!isResultMode && <InputModeTabs />}
+          {!isResultPage && <InputModeTabs />}
           <Space size={16}>
-            {isResultMode ? (
+            {isResultPage ? (
               <>
                 <Tooltip title="Copy text as html" placement="top">
                   <Button onClick={onCopyText} icon={<CopyOutlined />} />
