@@ -3,7 +3,8 @@ import "antd/dist/reset.css"
 
 import React from "react"
 import StyledComponentsRegistry from "@lib/registry"
-import "@styles/ui.less"
+// ui.less is not working with nextjs 13
+// import "@styles/ui.less"
 import "@styles/global.css"
 import { Open_Sans } from "next/font/google"
 
