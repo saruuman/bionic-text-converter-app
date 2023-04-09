@@ -1,15 +1,14 @@
 "use client"
-import { Form as AntdForm, Input, Space, Typography } from "antd"
+import { Flex } from "@/ui"
+import { Form as AntdForm, Button, Input, Space } from "antd"
 import styled from "styled-components"
-
-const { Title: AntdTitle } = Typography
 
 export const Text = styled.div`
   width: 100%;
   font-size: 18px;
   min-height: 100vh;
   /* scroll up */
-  transition: height 0.25s linear;
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 `
 export const TextArea = styled(Input.TextArea)`
   background-color: inherit;
@@ -18,9 +17,13 @@ export const TextArea = styled(Input.TextArea)`
   padding: 0px;
   font-size: 18px;
 `
-export const Title = styled(AntdTitle)`
+export const Title = styled.div`
   margin-bottom: 0px !important;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
+  position: absolute;
+  font-size: 18px;
+  top: 0;
+  left: 15px;
 `
 
 export const Form = styled(AntdForm)`
@@ -40,3 +43,8 @@ export const Body = styled(Space)`
 `
 // Bionic.styled.js
 // Bionic.styled.js
+export const InputModeButton = styled(Button)``
+export const HeaderInnerContainer = styled(Flex)`
+  max-width: 800px;
+  width: 100%;
+`

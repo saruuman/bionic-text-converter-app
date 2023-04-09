@@ -1,7 +1,7 @@
 import React from "react"
 import { Form, FormInstance } from "antd"
-import * as Styled from "./Bionic.styled"
-import { FormValues } from "./Bionic"
+import * as Styled from "./BionicTextConverter.styled"
+import { FormValues } from "./BionicTextConverter"
 
 type Props = {
   form: FormInstance<FormValues>

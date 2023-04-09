@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import { Form } from "antd"
-import * as Styled from "./Bionic.styled"
+import { Form, message } from "antd"
+import * as Styled from "./BionicTextConverter.styled"
 
 import { getBionicText } from "@/lib/getBionicText"
 import { Layout } from "../Layout"
@@ -13,17 +13,25 @@ import { BionicTextInput } from "./BionicTextInput"
 export type FormValues = {
   inputText: string
 }
-export const Bionic: React.FC = () => {
+export const BionicTextConverter: React.FC = () => {
   const [bionicText, setBionicText] = React.useState("")
 
-  const [mode, setMode] = React.useState<"input" | "result">("input")
-
+  const [isResultMode, setIsResultMode] = React.useState<boolean>(false)
+  const [inputMode, setInputMode] = React.useState<"text" | "scan">("text")
+  const changeInputMode = (mode: "text" | "scan") => {
+    setInputMode(mode)
+  }
   const [form] = Form.useForm<FormValues>()
+
   const handleGenerateBionic = (values) => {
     const inputText = values.inputText
+    if (!inputText) {
+      message.warning("Please enter some text")
+      return
+    }
     const bionicText = getBionicText(inputText)
     setBionicText(bionicText)
-    setMode("result")
+    setIsResultMode(true)
   }
   const copyText = () => {
     navigator.clipboard.writeText(bionicText)
@@ -31,7 +39,7 @@ export const Bionic: React.FC = () => {
 
   const closeResult = () => {
     clearInput()
-    setMode("input")
+    setIsResultMode(false)
   }
 
   const clearInput = () => {
@@ -53,7 +61,9 @@ export const Bionic: React.FC = () => {
     <Layout
       header={
         <Header
-          mode={mode}
+          inputMode={inputMode}
+          onInputModeChange={changeInputMode}
+          isResultMode={isResultMode}
           onCloseResult={closeResult}
           onCopyText={copyText}
           onGenerateBionicText={form.submit}
@@ -62,10 +72,11 @@ export const Bionic: React.FC = () => {
       }
     >
       <Styled.Body direction="vertical" size={40}>
-        {mode === "input" && (
+        {isResultMode ? (
+          <BionicTextResult bionicText={bionicText} />
+        ) : (
           <BionicTextInput form={form} onFormFinish={handleGenerateBionic} />
         )}
-        {mode === "result" && <BionicTextResult bionicText={bionicText} />}
       </Styled.Body>
     </Layout>
   )

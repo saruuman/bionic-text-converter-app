@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { Bionic } from "./components/Bionic/Bionic"
+import { BionicTextConverter } from "./components/BionicTextConverter/BionicTextConverter"
 import { AppContext } from "./context/app"
 
 export default function Page() {
@@ -10,7 +10,7 @@ export default function Page() {
     <AppContext.Provider
       value={{ title: "Bionic Reading App", headerHeight: 104 }}
     >
-      <Bionic />
+      <BionicTextConverter />
     </AppContext.Provider>
   )
 }

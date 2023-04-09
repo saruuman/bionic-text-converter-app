@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import * as Styled from "./Bionic.styled"
+import * as Styled from "./BionicTextConverter.styled"
 
 type Props = {
   bionicText: string

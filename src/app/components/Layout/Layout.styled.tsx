@@ -12,12 +12,20 @@ export const Layout = styled(AntdLayout)`
 
 export const Header = styled(AntdHeader)`
   background-color: #fff;
-  padding: 20px 80px;
+  /* for screen width>1200 */
+  padding: 40px 40px 10px;
+  @media (min-width: 1200px) {
+    padding: 40px 120px 10px;
+  }
   height: fit-content;
 `
 export const Content = styled(AntdContent)`
   display: flex;
   justify-content: center;
   height: 100%;
-  padding: 20px 80px;
+  padding: 20px 40px;
+
+  @media (min-width: 1200px) {
+    padding: 20px 120px;
+  }
 `
