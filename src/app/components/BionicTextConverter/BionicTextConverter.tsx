@@ -9,12 +9,15 @@ import { Layout } from "../Layout"
 import { Header } from "./Header"
 import { BionicTextResult } from "./BionicTextResult"
 import { BionicTextInput } from "./BionicTextInput"
+import { FileScanner } from "./FileScanner"
 
 export type FormValues = {
   inputText: string
 }
 export const BionicTextConverter: React.FC = () => {
   const [bionicText, setBionicText] = React.useState("")
+
+  const [inputText, setInputText] = React.useState<string>("")
 
   const [isResultPage, setIsResultPage] = React.useState<boolean>(false)
   const [inputMode, setInputMode] = React.useState<"text" | "scan">("text")
@@ -23,15 +26,24 @@ export const BionicTextConverter: React.FC = () => {
   }
   const [form] = Form.useForm<FormValues>()
 
-  const handleGenerateBionic = (values) => {
-    const inputText = values.inputText
+  const generateBionicText = () => {
     if (!inputText) {
-      message.warning("Please enter some text")
+      switch (inputMode) {
+        case "text":
+          message.error("Please enter some text")
+          break
+        case "scan":
+          message.error("Please scan a document or a picture")
+          break
+        default:
+          break
+      }
       return
     }
     const bionicText = getBionicText(inputText)
     setBionicText(bionicText)
     setIsResultPage(true)
+    setInputText("")
   }
   const copyText = () => {
     navigator.clipboard.writeText(bionicText)
@@ -45,6 +57,11 @@ export const BionicTextConverter: React.FC = () => {
   const clearInput = () => {
     form.resetFields()
   }
+
+  const onInputTextChange = (text: string) => {
+    setInputText(text)
+  }
+
   // useEffect(() => {
   //   if (bionicText) {
   //     const result = document.getElementById("result")
@@ -66,16 +83,18 @@ export const BionicTextConverter: React.FC = () => {
           isResultPage={isResultPage}
           onCloseResult={closeResult}
           onCopyText={copyText}
-          onGenerateBionicText={form.submit}
+          onGenerateBionicText={generateBionicText}
           onClear={clearInput}
         />
       }
     >
-      <Styled.Body direction="vertical" size={40}>
+      <Styled.Body align="center">
         {isResultPage ? (
           <BionicTextResult bionicText={bionicText} />
+        ) : inputMode === "text" ? (
+          <BionicTextInput onInputTextChange={onInputTextChange} form={form} />
         ) : (
-          <BionicTextInput form={form} onFormFinish={handleGenerateBionic} />
+          <FileScanner onInputTextChange={onInputTextChange} />
         )}
       </Styled.Body>
     </Layout>

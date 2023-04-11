@@ -49,7 +49,6 @@ export const Header: React.FC<Props> = ({
       key: "scan",
       tooltipTitle: "Scan a document or a picture (coming soon)",
       icon: <ScanOutlined />,
-      disabled: true,
     },
   ]
 
@@ -91,9 +90,11 @@ export const Header: React.FC<Props> = ({
               </>
             ) : (
               <>
-                <Tooltip title="Clear" placement="top">
-                  <Button onClick={onClear} icon={<ClearOutlined />} />
-                </Tooltip>
+                {inputMode === "text" && (
+                  <Tooltip title="Clear" placement="top">
+                    <Button onClick={onClear} icon={<ClearOutlined />} />
+                  </Tooltip>
+                )}
                 <Button type="primary" onClick={onGenerateBionicText}>
                   Generate Bionic Text
                 </Button>

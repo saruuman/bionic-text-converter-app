@@ -24,7 +24,7 @@ export const Content = styled(AntdContent)`
   justify-content: center;
   height: 100%;
   padding: 20px 40px;
-
+  min-height: 70vh;
   @media (min-width: 1200px) {
     padding: 20px 120px;
   }
