@@ -22,6 +22,7 @@ export const BionicTextConverter: React.FC = () => {
   const [isResultPage, setIsResultPage] = React.useState<boolean>(false)
   const [inputMode, setInputMode] = React.useState<"text" | "scan">("text")
   const changeInputMode = (mode: "text" | "scan") => {
+    setInputText("")
     setInputMode(mode)
   }
   const [form] = Form.useForm<FormValues>()
