@@ -32,7 +32,6 @@ export const Form = styled(AntdForm)`
 export const Body = styled(Flex)`
   width: 100%;
   position: relative;
-  align-items: center;
   max-width: 800px;
 `
 // Bionic.styled.js

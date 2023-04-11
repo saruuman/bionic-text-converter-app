@@ -90,11 +90,11 @@ export const Header: React.FC<Props> = ({
               </>
             ) : (
               <>
-                {inputMode === "text" && (
-                  <Tooltip title="Clear" placement="top">
-                    <Button onClick={onClear} icon={<ClearOutlined />} />
-                  </Tooltip>
-                )}
+                {/* {inputMode === "text" && ( */}
+                <Tooltip title="Clear" placement="top">
+                  <Button onClick={onClear} icon={<ClearOutlined />} />
+                </Tooltip>
+                {/* )} */}
                 <Button type="primary" onClick={onGenerateBionicText}>
                   Generate Bionic Text
                 </Button>

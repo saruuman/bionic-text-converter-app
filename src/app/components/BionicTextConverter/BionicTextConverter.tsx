@@ -12,7 +12,8 @@ import { BionicTextInput } from "./BionicTextInput"
 import { FileScanner } from "./FileScanner"
 
 export type FormValues = {
-  inputText: string
+  inputText?: string
+  file?: File
 }
 export const BionicTextConverter: React.FC = () => {
   const [bionicText, setBionicText] = React.useState("")
@@ -89,13 +90,13 @@ export const BionicTextConverter: React.FC = () => {
         />
       }
     >
-      <Styled.Body align="center">
+      <Styled.Body align="start">
         {isResultPage ? (
           <BionicTextResult bionicText={bionicText} />
         ) : inputMode === "text" ? (
           <BionicTextInput onInputTextChange={onInputTextChange} form={form} />
         ) : (
-          <FileScanner onInputTextChange={onInputTextChange} />
+          <FileScanner onInputTextChange={onInputTextChange} form={form} />
         )}
       </Styled.Body>
     </Layout>

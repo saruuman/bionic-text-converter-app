@@ -1,13 +1,15 @@
 import React from "react"
-import { message } from "antd"
+import { Form, FormInstance, message } from "antd"
 import { createWorker } from "tesseract.js"
 import { InboxOutlined, LoadingOutlined } from "@ant-design/icons"
 import * as Styled from "./BionicTextConverter.styled"
+import { FormValues } from "./BionicTextConverter"
 
 type Props = {
   onInputTextChange: (text: string) => void
+  form: FormInstance<FormValues>
 }
-export const FileScanner: React.FC<Props> = ({ onInputTextChange }) => {
+export const FileScanner: React.FC<Props> = ({ onInputTextChange, form }) => {
   const [isLoading, setIsLoading] = React.useState(false)
 
   // TODO: handle multiple files
@@ -54,26 +56,33 @@ export const FileScanner: React.FC<Props> = ({ onInputTextChange }) => {
     onInputTextChange("")
   }
 
+  const onFormReset = () => {
+    onInputTextChange("")
+  }
   return (
-    <Styled.Dragger
-      beforeUpload={beforeUpload}
-      showUploadList={true}
-      multiple={false}
-      maxCount={1}
-      onRemove={onRemove}
-      accept="image/* application/pdf text/html text/plain"
-      disabled={isLoading}
-    >
-      <p className="ant-upload-drag-icon">
-        {isLoading ? (
-          <LoadingOutlined style={{ color: "#d9d9d9" }} />
-        ) : (
-          <InboxOutlined style={{ color: "black" }} />
-        )}
-      </p>
-      <p className="ant-upload-text">
-        Click or drag file to this area to upload
-      </p>
-    </Styled.Dragger>
+    <Styled.Form form={form} layout="vertical">
+      <Form.Item name="file" onReset={onFormReset}>
+        <Styled.Dragger
+          beforeUpload={beforeUpload}
+          showUploadList={true}
+          multiple={false}
+          maxCount={1}
+          onRemove={onRemove}
+          accept="image/* application/pdf text/html text/plain"
+          disabled={isLoading}
+        >
+          <p className="ant-upload-drag-icon">
+            {isLoading ? (
+              <LoadingOutlined style={{ color: "#d9d9d9" }} />
+            ) : (
+              <InboxOutlined style={{ color: "black" }} />
+            )}
+          </p>
+          <p className="ant-upload-text">
+            Click or drag file to this area to upload
+          </p>
+        </Styled.Dragger>
+      </Form.Item>
+    </Styled.Form>
   )
 }
