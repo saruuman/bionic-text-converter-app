@@ -36,6 +36,18 @@ export const FileScanner: React.FC<Props> = ({ form, onFormFinish }) => {
     reader.readAsDataURL(file)
   }
 
+  const extractTextFromTextFile = (file) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      if (!e?.target?.result) return
+      form.setFieldsValue({ inputText: e?.target?.result as string })
+    }
+    reader.onerror = () => {
+      message.error("Failed to process file")
+    }
+    reader.readAsText(file)
+  }
+
   // TODO: handle other file types
   const beforeUpload = (file) => {
     form.setFieldsValue({ inputText: "" })
@@ -44,6 +56,10 @@ export const FileScanner: React.FC<Props> = ({ form, onFormFinish }) => {
       case "image/jpeg":
       case "image/png":
         extractTextFromImage(file)
+        break
+      case "text/plain":
+      case "text/html":
+        extractTextFromTextFile(file)
         break
       default:
         message.error("File type not supported")
