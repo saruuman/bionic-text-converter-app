@@ -1,19 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 /** @type {import('next').NextConfig} */
-const withLess = require("next-less")
+// const withLess = require("next-less")
 
-const nextConfig = withLess({
+const nextConfig = {
   experimental: {
     appDir: true,
   },
   compiler: {
-    reactStrictMode: true,
+    // reactStrictMode: true,
     styledComponents: true,
   },
-  lessOptions: {
-    javascriptEnabled: true,
-  },
-})
+}
 
 module.exports = nextConfig
