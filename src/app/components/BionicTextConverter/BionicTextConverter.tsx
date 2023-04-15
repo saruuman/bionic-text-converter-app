@@ -9,7 +9,7 @@ import { Layout } from "../Layout"
 import { Header } from "./Header"
 import { BionicTextResult } from "./BionicTextResult"
 import { BionicTextInput } from "./BionicTextInput"
-import { FileScanner } from "./FileScanner"
+import { FileUploader } from "./FileUploader"
 
 export type FormValues = {
   inputText?: string
@@ -89,7 +89,7 @@ export const BionicTextConverter: React.FC = () => {
         ) : inputMode === "text" ? (
           <BionicTextInput onFormFinish={generateBionicText} form={form} />
         ) : (
-          <FileScanner onFormFinish={generateBionicText} form={form} />
+          <FileUploader onFormFinish={generateBionicText} form={form} />
         )}
       </Styled.Body>
     </Layout>

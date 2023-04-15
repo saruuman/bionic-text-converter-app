@@ -9,7 +9,7 @@ type Props = {
   form: FormInstance<FormValues>
   onFormFinish: (values: unknown) => void
 }
-export const FileScanner: React.FC<Props> = ({ form, onFormFinish }) => {
+export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
   const [isLoading, setIsLoading] = React.useState(false)
 
   // TODO: handle multiple files
