@@ -6,10 +6,10 @@ import * as Styled from "./BionicTextConverter.styled"
 import { FormValues } from "./BionicTextConverter"
 
 type Props = {
-  onInputTextChange: (text: string) => void
   form: FormInstance<FormValues>
+  onFormFinish: (values: unknown) => void
 }
-export const FileScanner: React.FC<Props> = ({ onInputTextChange, form }) => {
+export const FileScanner: React.FC<Props> = ({ form, onFormFinish }) => {
   const [isLoading, setIsLoading] = React.useState(false)
 
   // TODO: handle multiple files
@@ -26,7 +26,7 @@ export const FileScanner: React.FC<Props> = ({ onInputTextChange, form }) => {
       const { data } = await worker.recognize(
         e?.target?.result as Tesseract.ImageLike,
       )
-      onInputTextChange(data.text)
+      form.setFieldsValue({ inputText: data.text })
       await worker.terminate()
       setIsLoading(false)
     }
@@ -38,7 +38,7 @@ export const FileScanner: React.FC<Props> = ({ onInputTextChange, form }) => {
 
   // TODO: handle other file types
   const beforeUpload = (file) => {
-    onInputTextChange("")
+    form.setFieldsValue({ inputText: "" })
     const { type } = file
     switch (type) {
       case "image/jpeg":
@@ -47,21 +47,18 @@ export const FileScanner: React.FC<Props> = ({ onInputTextChange, form }) => {
         break
       default:
         message.error("File type not supported")
+        form.resetFields()
         break
     }
     return true
   }
 
   const onRemove = () => {
-    onInputTextChange("")
-  }
-
-  const onFormReset = () => {
-    onInputTextChange("")
+    form.setFieldsValue({ inputText: "" })
   }
   return (
-    <Styled.Form form={form} layout="vertical">
-      <Form.Item name="file" onReset={onFormReset}>
+    <Styled.Form form={form} layout="vertical" onFinish={onFormFinish}>
+      <Form.Item name="file">
         <Styled.Dragger
           beforeUpload={beforeUpload}
           showUploadList={true}
@@ -83,6 +80,7 @@ export const FileScanner: React.FC<Props> = ({ onInputTextChange, form }) => {
           </p>
         </Styled.Dragger>
       </Form.Item>
+      <Form.Item name="inputText" hidden required />
     </Styled.Form>
   )
 }

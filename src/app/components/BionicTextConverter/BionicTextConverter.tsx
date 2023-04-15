@@ -17,18 +17,16 @@ export type FormValues = {
 }
 export const BionicTextConverter: React.FC = () => {
   const [bionicText, setBionicText] = React.useState("")
-
-  const [inputText, setInputText] = React.useState<string>("")
-
   const [isResultPage, setIsResultPage] = React.useState<boolean>(false)
   const [inputMode, setInputMode] = React.useState<"text" | "scan">("text")
   const changeInputMode = (mode: "text" | "scan") => {
-    setInputText("")
+    clearInput()
     setInputMode(mode)
   }
   const [form] = Form.useForm<FormValues>()
 
-  const generateBionicText = () => {
+  const generateBionicText = (value) => {
+    const { inputText } = value
     if (!inputText) {
       switch (inputMode) {
         case "text":
@@ -45,7 +43,7 @@ export const BionicTextConverter: React.FC = () => {
     const bionicText = getBionicText(inputText)
     setBionicText(bionicText)
     setIsResultPage(true)
-    setInputText("")
+    clearInput()
   }
   const copyText = () => {
     navigator.clipboard.writeText(bionicText)
@@ -60,14 +58,9 @@ export const BionicTextConverter: React.FC = () => {
     form.resetFields()
   }
 
-  const onInputTextChange = (text: string) => {
-    setInputText(text)
-  }
-
   // useEffect(() => {
   //   if (bionicText) {
   //     const result = document.getElementById("result")
-  //     // scroll leaving 104 px from top
   //     if (result) {
   //       const marginTop = 104 // margin top in pixels
   //       const topOffset = result.offsetTop - marginTop
@@ -85,7 +78,7 @@ export const BionicTextConverter: React.FC = () => {
           isResultPage={isResultPage}
           onCloseResult={closeResult}
           onCopyText={copyText}
-          onGenerateBionicText={generateBionicText}
+          onGenerateBionicText={form.submit}
           onClear={clearInput}
         />
       }
@@ -94,9 +87,9 @@ export const BionicTextConverter: React.FC = () => {
         {isResultPage ? (
           <BionicTextResult bionicText={bionicText} />
         ) : inputMode === "text" ? (
-          <BionicTextInput onInputTextChange={onInputTextChange} form={form} />
+          <BionicTextInput onFormFinish={generateBionicText} form={form} />
         ) : (
-          <FileScanner onInputTextChange={onInputTextChange} form={form} />
+          <FileScanner onFormFinish={generateBionicText} form={form} />
         )}
       </Styled.Body>
     </Layout>

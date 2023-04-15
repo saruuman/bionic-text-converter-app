@@ -6,12 +6,9 @@ import { Form, FormInstance } from "antd"
 
 type Props = {
   form: FormInstance<FormValues>
-  onInputTextChange: (text: string) => void
+  onFormFinish: (values: unknown) => void
 }
-export const BionicTextInput: React.FC<Props> = ({
-  form,
-  onInputTextChange,
-}) => {
+export const BionicTextInput: React.FC<Props> = ({ form, onFormFinish }) => {
   const ref = React.useRef<HTMLTextAreaElement>(null)
 
   const onBlur = () => {
@@ -21,21 +18,24 @@ export const BionicTextInput: React.FC<Props> = ({
       ref.current.focus()
     }
   }
-
-  const onValuesChange = (e) => {
-    const { inputText } = e
-    onInputTextChange(inputText)
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter") {
+      if (!e.shiftKey) {
+        e.preventDefault()
+        form.submit()
+      }
+    }
   }
-
   return (
-    <Styled.Form form={form} layout="vertical" onValuesChange={onValuesChange}>
-      <Form.Item name="inputText">
+    <Styled.Form form={form} layout="vertical" onFinish={onFormFinish}>
+      <Form.Item name="inputText" required>
         <Styled.TextArea
           ref={ref}
           autoFocus
           placeholder="Enter text here"
           autoSize={{ minRows: 17 }}
           onBlur={onBlur}
+          onKeyDown={onKeyDown}
         />
       </Form.Item>
     </Styled.Form>
