@@ -32,11 +32,13 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
     }
     reader.onerror = () => {
       message.error("Failed to process file")
+      setIsLoading(false)
     }
     reader.readAsDataURL(file)
   }
 
   const extractTextFromTextFile = (file) => {
+    setIsLoading(true)
     const reader = new FileReader()
     reader.onload = (e) => {
       if (!e?.target?.result) return
@@ -44,9 +46,15 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
     }
     reader.onerror = () => {
       message.error("Failed to process file")
+      setIsLoading(false)
     }
     reader.readAsText(file)
+    setIsLoading(false)
   }
+
+  // ...
+
+  const extractTextFromPdf = async (file: File) => {}
 
   // TODO: handle other file types
   const beforeUpload = (file) => {
@@ -60,6 +68,9 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
       case "text/plain":
       case "text/html":
         extractTextFromTextFile(file)
+        break
+      case "application/pdf":
+        extractTextFromPdf(file)
         break
       default:
         message.error("File type not supported")
