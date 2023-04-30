@@ -58,7 +58,7 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
 
   // ...
 
-  const extractTextFromPdf = async (file: RcFile) => {}
+  // const extractTextFromPdf = async (file: RcFile) => {}
 
   // TODO: handle other file types
   const beforeUpload = (file) => {
@@ -72,9 +72,9 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
       case "text/html":
         extractTextFromTextFile(file)
         break
-      case "application/pdf":
-        extractTextFromPdf(file)
-        break
+      // case "application/pdf":
+      //   extractTextFromPdf(file)
+      //   break
       default:
         message.error("File type not supported")
         form.resetFields()
@@ -111,7 +111,8 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
         multiple={false}
         maxCount={1}
         onRemove={onRemove}
-        accept="image/* application/pdf text/html text/plain"
+        // accept="image/* application/pdf text/html text/plain"
+        accept="image/* text/html text/plain"
         disabled={isLoading}
       >
         <p className="ant-upload-drag-icon">
@@ -127,7 +128,11 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
       </Styled.Dragger>
       {rawText && (
         <>
-          <Divider />
+          <Divider
+            style={{
+              margin: "0",
+            }}
+          />
           <BionicTextInput
             formItemLabel={"Text extracted from file:"}
             form={form}
