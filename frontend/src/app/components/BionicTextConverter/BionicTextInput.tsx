@@ -2,13 +2,20 @@ import React from "react"
 import { FormValues } from "./BionicTextConverter"
 
 import * as Styled from "./BionicTextConverter.styled"
-import { Form, FormInstance } from "antd"
+import { FormInstance } from "antd"
 
 type Props = {
   form: FormInstance<FormValues>
   onFormFinish: (values: unknown) => void
+  formItemLabel?: string
+  onValuesChange?: (changedValues: unknown, values: unknown) => void
 }
-export const BionicTextInput: React.FC<Props> = ({ form, onFormFinish }) => {
+export const BionicTextInput: React.FC<Props> = ({
+  form,
+  onFormFinish,
+  formItemLabel,
+  onValuesChange,
+}) => {
   const ref = React.useRef<HTMLTextAreaElement>(null)
 
   const onBlur = () => {
@@ -26,9 +33,17 @@ export const BionicTextInput: React.FC<Props> = ({ form, onFormFinish }) => {
       }
     }
   }
+
   return (
-    <Styled.Form form={form} layout="vertical" onFinish={onFormFinish}>
-      <Form.Item name="inputText" required>
+    <Styled.Form
+      form={form}
+      layout="vertical"
+      onFinish={onFormFinish}
+      requiredMark="optional"
+      autoFocus
+      onValuesChange={onValuesChange}
+    >
+      <Styled.FormItem name="inputText" required label={formItemLabel}>
         <Styled.TextArea
           ref={ref}
           autoFocus
@@ -37,7 +52,7 @@ export const BionicTextInput: React.FC<Props> = ({ form, onFormFinish }) => {
           onBlur={onBlur}
           onKeyDown={onKeyDown}
         />
-      </Form.Item>
+      </Styled.FormItem>
     </Styled.Form>
   )
 }

@@ -1,9 +1,11 @@
-import React from "react"
-import { Form, FormInstance, message } from "antd"
+import React, { useEffect } from "react"
+import { Divider, FormInstance, message, Space } from "antd"
 import { createWorker } from "tesseract.js"
 import { InboxOutlined, LoadingOutlined } from "@ant-design/icons"
 import * as Styled from "./BionicTextConverter.styled"
 import { FormValues } from "./BionicTextConverter"
+import { RcFile } from "antd/es/upload"
+import { BionicTextInput } from "./BionicTextInput"
 
 type Props = {
   form: FormInstance<FormValues>
@@ -12,8 +14,10 @@ type Props = {
 export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
   const [isLoading, setIsLoading] = React.useState(false)
 
+  const [rawText, setRawText] = React.useState("")
+
   // TODO: handle multiple files
-  const extractTextFromImage = (file) => {
+  const extractTextFromImage = (file: RcFile) => {
     const reader = new FileReader()
     reader.onload = async (e) => {
       setIsLoading(true)
@@ -26,7 +30,7 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
       const { data } = await worker.recognize(
         e?.target?.result as Tesseract.ImageLike,
       )
-      form.setFieldsValue({ inputText: data.text })
+      setRawText(data.text)
       await worker.terminate()
       setIsLoading(false)
     }
@@ -37,12 +41,12 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
     reader.readAsDataURL(file)
   }
 
-  const extractTextFromTextFile = (file) => {
+  const extractTextFromTextFile = (file: RcFile) => {
     setIsLoading(true)
     const reader = new FileReader()
     reader.onload = (e) => {
       if (!e?.target?.result) return
-      form.setFieldsValue({ inputText: e?.target?.result as string })
+      setRawText(e?.target?.result as string)
     }
     reader.onerror = () => {
       message.error("Failed to process file")
@@ -54,11 +58,10 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
 
   // ...
 
-  const extractTextFromPdf = async (file: File) => {}
+  const extractTextFromPdf = async (file: RcFile) => {}
 
   // TODO: handle other file types
   const beforeUpload = (file) => {
-    form.setFieldsValue({ inputText: "" })
     const { type } = file
     switch (type) {
       case "image/jpeg":
@@ -77,37 +80,62 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
         form.resetFields()
         break
     }
-    return true
+
+    return false
   }
 
   const onRemove = () => {
-    form.setFieldsValue({ inputText: "" })
+    setRawText("")
   }
+
+  useEffect(() => {
+    form.setFieldsValue({ inputText: rawText })
+  }, [rawText, form])
+
+  const onValuesChange = (changedValues: unknown, allValues: unknown) => {
+    const { inputText } = allValues as FormValues
+    setRawText(inputText || "")
+  }
+
   return (
-    <Styled.Form form={form} layout="vertical" onFinish={onFormFinish}>
-      <Form.Item name="file">
-        <Styled.Dragger
-          beforeUpload={beforeUpload}
-          showUploadList={true}
-          multiple={false}
-          maxCount={1}
-          onRemove={onRemove}
-          accept="image/* application/pdf text/html text/plain"
-          disabled={isLoading}
-        >
-          <p className="ant-upload-drag-icon">
-            {isLoading ? (
-              <LoadingOutlined style={{ color: "#d9d9d9" }} />
-            ) : (
-              <InboxOutlined style={{ color: "black" }} />
-            )}
-          </p>
-          <p className="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-        </Styled.Dragger>
-      </Form.Item>
-      <Form.Item name="inputText" hidden required />
-    </Styled.Form>
+    <Space
+      direction="vertical"
+      size={24}
+      style={{
+        width: "100%",
+      }}
+    >
+      <Styled.Dragger
+        beforeUpload={beforeUpload}
+        showUploadList={false}
+        multiple={false}
+        maxCount={1}
+        onRemove={onRemove}
+        accept="image/* application/pdf text/html text/plain"
+        disabled={isLoading}
+      >
+        <p className="ant-upload-drag-icon">
+          {isLoading ? (
+            <LoadingOutlined style={{ color: "#d9d9d9" }} />
+          ) : (
+            <InboxOutlined style={{ color: "black" }} />
+          )}
+        </p>
+        <p className="ant-upload-text">
+          Click or drag file to this area to upload
+        </p>
+      </Styled.Dragger>
+      {rawText && (
+        <>
+          <Divider />
+          <BionicTextInput
+            formItemLabel={"Text extracted from file:"}
+            form={form}
+            onFormFinish={onFormFinish}
+            onValuesChange={onValuesChange}
+          />
+        </>
+      )}
+    </Space>
   )
 }

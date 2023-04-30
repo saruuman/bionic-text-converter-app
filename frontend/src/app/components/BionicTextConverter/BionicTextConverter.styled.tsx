@@ -48,3 +48,12 @@ export const Dragger = styled(AntdDragger)`
     border-color: #5d5a5a !important;
   }
 `
+export const FormItem = styled(AntdForm.Item)`
+  label {
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    line-height: 2 !important;
+    color: #351111 !important;
+    margin-bottom: 12px !important;
+  }
+`

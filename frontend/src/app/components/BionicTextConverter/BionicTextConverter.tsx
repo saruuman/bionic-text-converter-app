@@ -13,7 +13,6 @@ import { FileUploader } from "./FileUploader"
 
 export type FormValues = {
   inputText?: string
-  file?: File
 }
 export const BionicTextConverter: React.FC = () => {
   const [bionicText, setBionicText] = React.useState("")
@@ -27,7 +26,8 @@ export const BionicTextConverter: React.FC = () => {
 
   const generateBionicText = (value) => {
     const { inputText } = value
-    if (!inputText) {
+    const trimmedInputText = inputText.trim()
+    if (!trimmedInputText) {
       switch (inputMode) {
         case "text":
           message.error("Please enter some text")
@@ -40,11 +40,12 @@ export const BionicTextConverter: React.FC = () => {
       }
       return
     }
-    const bionicText = getBionicText(inputText)
+    const bionicText = getBionicText(trimmedInputText)
     setBionicText(bionicText)
     setIsResultPage(true)
     clearInput()
   }
+
   const copyText = () => {
     navigator.clipboard.writeText(bionicText)
   }
