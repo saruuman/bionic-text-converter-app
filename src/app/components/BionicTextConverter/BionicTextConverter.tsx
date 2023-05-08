@@ -25,8 +25,8 @@ export const BionicTextConverter: React.FC = () => {
   const [form] = Form.useForm<FormValues>()
 
   const generateBionicText = (value) => {
-    const { inputText } = value
-    const trimmedInputText = inputText.trim()
+    const { inputText } = value 
+    const trimmedInputText = (inputText || '').trim()
     if (!trimmedInputText) {
       switch (inputMode) {
         case "text":
