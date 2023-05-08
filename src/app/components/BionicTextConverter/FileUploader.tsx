@@ -9,8 +9,9 @@ import { BionicTextInput } from "./BionicTextInput"
 
 type Props = {
   form: FormInstance<FormValues>
+  submitForm: () => void
 }
-export const FileUploader: React.FC<Props> = ({ form }) => {
+export const FileUploader: React.FC<Props> = ({ form, submitForm }) => {
   const [isLoading, setIsLoading] = React.useState(false)
 
   const [rawText, setRawText] = React.useState("")
@@ -135,6 +136,7 @@ export const FileUploader: React.FC<Props> = ({ form }) => {
           <BionicTextInput
             formItemLabel={"Text extracted from file:"}
             form={form}
+            submitForm={submitForm}
             onValuesChange={onValuesChange}
           />
         </>

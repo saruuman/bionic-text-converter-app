@@ -8,11 +8,13 @@ type Props = {
   form: FormInstance<FormValues>
   formItemLabel?: string
   onValuesChange?: (changedValues: unknown, values: unknown) => void
+  submitForm: () => void
 }
 export const BionicTextInput: React.FC<Props> = ({
   form,
   formItemLabel,
   onValuesChange,
+  submitForm,
 }) => {
   const ref = React.useRef<HTMLTextAreaElement>(null)
 
@@ -27,7 +29,7 @@ export const BionicTextInput: React.FC<Props> = ({
     if (e.key === "Enter") {
       if (!e.shiftKey) {
         e.preventDefault()
-        form.submit()
+        submitForm()
       }
     }
   }

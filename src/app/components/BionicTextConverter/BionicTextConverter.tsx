@@ -103,9 +103,9 @@ export const BionicTextConverter: React.FC = () => {
         {isResultPage ? (
           <BionicTextResult bionicText={bionicText} />
         ) : inputMode === "text" ? (
-          <BionicTextInput form={form} />
+          <BionicTextInput form={form} submitForm={submitForm} />
         ) : (
-          <FileUploader form={form} />
+          <FileUploader form={form} submitForm={submitForm} />
         )}
       </Styled.Body>
     </Layout>
