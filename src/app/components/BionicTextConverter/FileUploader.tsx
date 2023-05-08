@@ -9,13 +9,11 @@ import { BionicTextInput } from "./BionicTextInput"
 
 type Props = {
   form: FormInstance<FormValues>
-  onFormFinish: (values: unknown) => void
 }
-export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
+export const FileUploader: React.FC<Props> = ({ form }) => {
   const [isLoading, setIsLoading] = React.useState(false)
 
   const [rawText, setRawText] = React.useState("")
-
   // TODO: handle multiple files
   const extractTextFromImage = (file: RcFile) => {
     const reader = new FileReader()
@@ -77,15 +75,16 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
       //   break
       default:
         message.error("File type not supported")
+        setRawText("")
         form.resetFields()
         break
     }
 
     return false
   }
-
   const onRemove = () => {
     setRawText("")
+    form.setFieldValue("inputText", "")
   }
 
   useEffect(() => {
@@ -136,7 +135,6 @@ export const FileUploader: React.FC<Props> = ({ form, onFormFinish }) => {
           <BionicTextInput
             formItemLabel={"Text extracted from file:"}
             form={form}
-            onFormFinish={onFormFinish}
             onValuesChange={onValuesChange}
           />
         </>

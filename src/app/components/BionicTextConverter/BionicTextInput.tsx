@@ -6,13 +6,11 @@ import { FormInstance } from "antd"
 
 type Props = {
   form: FormInstance<FormValues>
-  onFormFinish: (values: unknown) => void
   formItemLabel?: string
   onValuesChange?: (changedValues: unknown, values: unknown) => void
 }
 export const BionicTextInput: React.FC<Props> = ({
   form,
-  onFormFinish,
   formItemLabel,
   onValuesChange,
 }) => {
@@ -33,12 +31,10 @@ export const BionicTextInput: React.FC<Props> = ({
       }
     }
   }
-
   return (
     <Styled.Form
       form={form}
       layout="vertical"
-      onFinish={onFormFinish}
       requiredMark="optional"
       autoFocus
       onValuesChange={onValuesChange}

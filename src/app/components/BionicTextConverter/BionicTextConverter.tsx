@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useCallback } from "react"
 import { Form, message } from "antd"
 import * as Styled from "./BionicTextConverter.styled"
 
@@ -17,47 +17,56 @@ export type FormValues = {
 export const BionicTextConverter: React.FC = () => {
   const [bionicText, setBionicText] = React.useState("")
   const [isResultPage, setIsResultPage] = React.useState<boolean>(false)
+
   const [inputMode, setInputMode] = React.useState<"text" | "scan">("text")
-  const changeInputMode = (mode: "text" | "scan") => {
-    clearInput()
-    setInputMode(mode)
-  }
   const [form] = Form.useForm<FormValues>()
 
-  const generateBionicText = (value) => {
-    const { inputText } = value 
-    const trimmedInputText = (inputText || '').trim()
-    if (!trimmedInputText) {
-      switch (inputMode) {
-        case "text":
-          message.error("Please enter some text")
-          break
-        case "scan":
-          message.error("Please scan a document or a picture")
-          break
-        default:
-          break
-      }
-      return
+  const clearInput = useCallback(() => {
+    form.resetFields()
+  }, [form])
+
+  const changeInputMode = useCallback(
+    (mode: "text" | "scan") => {
+      clearInput()
+      setInputMode(mode)
+    },
+    [clearInput],
+  )
+  const showEmptyInputErrorMessage = useCallback(() => {
+    switch (inputMode) {
+      case "text":
+        message.error("Please enter some text")
+        break
+      case "scan":
+        message.error("Please scan a document or a picture")
+        break
     }
-    const bionicText = getBionicText(trimmedInputText)
-    setBionicText(bionicText)
-    setIsResultPage(true)
-    clearInput()
-  }
+  }, [inputMode])
+
+  const generateBionicText = useCallback(
+    (value) => {
+      const { inputText } = value
+      const trimmedInputText = (inputText || "").trim()
+      if (!trimmedInputText) {
+        showEmptyInputErrorMessage()
+        return
+      }
+      const bionicText = getBionicText(trimmedInputText)
+      setBionicText(bionicText)
+      setIsResultPage(true)
+      clearInput()
+    },
+    [clearInput, showEmptyInputErrorMessage],
+  )
 
   const copyText = () => {
     navigator.clipboard.writeText(bionicText)
   }
 
-  const closeResult = () => {
+  const closeResult = useCallback(() => {
     clearInput()
     setIsResultPage(false)
-  }
-
-  const clearInput = () => {
-    form.resetFields()
-  }
+  }, [clearInput])
 
   // useEffect(() => {
   //   if (bionicText) {
@@ -70,6 +79,12 @@ export const BionicTextConverter: React.FC = () => {
   //   }
   // }, [bionicText])
 
+  const submitForm = () => {
+    form.validateFields().then((values) => {
+      generateBionicText(values)
+    })
+  }
+
   return (
     <Layout
       header={
@@ -79,18 +94,18 @@ export const BionicTextConverter: React.FC = () => {
           isResultPage={isResultPage}
           onCloseResult={closeResult}
           onCopyText={copyText}
-          onGenerateBionicText={form.submit}
+          onGenerateBionicText={submitForm}
           onClear={clearInput}
         />
       }
     >
-      <Styled.Body align="start">
+      <Styled.Body align="start" key={inputMode}>
         {isResultPage ? (
           <BionicTextResult bionicText={bionicText} />
         ) : inputMode === "text" ? (
-          <BionicTextInput onFormFinish={generateBionicText} form={form} />
+          <BionicTextInput form={form} />
         ) : (
-          <FileUploader onFormFinish={generateBionicText} form={form} />
+          <FileUploader form={form} />
         )}
       </Styled.Body>
     </Layout>
